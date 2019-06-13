@@ -1,0 +1,88 @@
+Sub StockVolume()
+
+Dim Ticker As String
+Dim Total As Double
+Dim i As Long
+Dim Writetorow As Integer
+Dim lastrow As Long
+
+
+Ticker = Range("A2").Value
+Total = Range("G2").Value
+
+
+Writetorow = 2
+ 
+lastrow = Cells(Rows.Count, 1).End(xlUp).Row
+
+For i = 3 To lastrow + 1
+
+    If Cells(i, 1).Value = Ticker Then
+        Total = Total + Cells(i, 7).Value
+        
+    Else
+        Cells(Writetorow, 9).Value = Ticker
+        Cells(Writetorow, 10).Value = Total
+        
+        Writetorow = Writetorow + 1
+        
+        Ticker = Cells(i, 1).Value
+        Total = Cells(i, 7).Value
+     End If
+    
+    
+Next i
+
+
+End Sub
+
+Sub yearlychangenumber()
+
+Dim opennumber As Double
+Dim closenumber As Double
+Dim yearlychange As Double
+Dim percentchange As Double
+Dim i As Long
+Dim lastrow As Long
+
+
+Ticker = Range("A2").Value
+Total = Range("G2").Value
+
+opennumber = Range("C2").Value
+
+Writetorow = 2
+ 
+lastrow = Cells(Rows.Count, 1).End(xlUp).Row
+
+For i = 3 To lastrow + 1
+
+    If Cells(i, 1).Value = Ticker Then
+        Total = Total + Cells(i, 7).Value
+        
+    Else
+        closenumber = Cells(i - 1, "F").Value
+        
+        yearlychange = closenumber - opennumber
+        percentchange = yearlychange / opennumber
+        
+        
+        Cells(Writetorow, "I").Value = Ticker
+        Cells(Writetorow, "L").Value = Total
+        Cells(Writetorow, "J").Value = yearlychange
+        Cells(Writetorow, "K").Value = percentchange
+        
+        Writetorow = Writetorow + 1
+        
+        
+        Ticker = Cells(i, "A").Value
+        Total = Cells(i, "G").Value
+        opennumber = Cells(i, "C").Value
+        
+        
+     End If
+    
+    
+Next i
+
+End Sub
