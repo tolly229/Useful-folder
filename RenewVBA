@@ -1,0 +1,68 @@
+Sub yearlychangenumber()
+
+Dim opennumber As Double
+Dim closenumber As Double
+Dim yearlychange As Double
+Dim percentchange As Double
+Dim i As Long
+Dim lastrow As Long
+
+Columns("J:K").Select
+Selection.Insert Shift:=xlToRight, CopyOrigin:=xlFormatFromLeftOrAbove
+Cells(1, "J").Value = "Yearly Change"
+Cells(1, "K").Value = "Percent Change"
+Columns("J:K").EntireColumn.AutoFit
+
+
+Ticker = Range("A2").Value
+Total = Range("G2").Value
+
+opennumber = Range("C2").Value
+
+Writetorow = 2
+ 
+lastrow = Cells(Rows.Count, 1).End(xlUp).Row
+
+For i = 3 To lastrow + 1
+
+    If Cells(i, 1).Value = Ticker Then
+        Total = Total + Cells(i, 7).Value
+        
+    Else
+        closenumber = Cells(i - 1, "F").Value
+        
+        yearlychange = closenumber - opennumber
+        percentchange = yearlychange / opennumber
+        
+        
+        Cells(Writetorow, "I").Value = Ticker
+        Cells(Writetorow, "L").Value = Total
+        Cells(Writetorow, "J").Value = yearlychange
+        Cells(Writetorow, "K").Value = percentchange
+        
+        Writetorow = Writetorow + 1
+        
+        
+        Ticker = Cells(i, "A").Value
+        Total = Cells(i, "G").Value
+        opennumber = Cells(i, "C").Value
+        
+        
+     End If
+    
+    
+Next i
+
+For Each cell In Range("J2:J290")
+    
+    If cell.Value > 0 Then
+        cell.Interior.ColorIndex = 3
+    Else
+        cell.Interior.ColorIndex = 4
+        
+    End If
+
+Next
+
+
+End Sub
